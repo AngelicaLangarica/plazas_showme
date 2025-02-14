@@ -1,0 +1,9 @@
+# -*- coding: utf-8 -*-
+# Developed By Hector M. Chavez Cortez, Angelica Langarica Escobedo
+
+from flectra import models, fields, api, _
+
+class SaleOrderPlazas(models.Model):
+    _inherit = 'sale.order'
+
+    plaza_id = fields.Many2one('plazas.manager', string="Plaza", tracking=True)

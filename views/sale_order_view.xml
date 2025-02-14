@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<flectra>
+    <data>
+        <record id="sale_order_view_inherit_plazas" model="ir.ui.view">
+            <field name="name">sale.order.view.form.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet/group[@name='sale_header']/group[@name='order_details']/field[@name='payment_term_id']" position="after">
+                    <field name="plaza_id" />
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_quotation_tree_inherit_plaza" model="ir.ui.view">
+            <field name="name">view.quotation.tree.inherit.plaza</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_quotation_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="plaza_id" />
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_order_tree_inherit_plaza" model="ir.ui.view">
+            <field name="name">view.order.tree.inherit.plaza</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="plaza_id" />
+                </xpath>
+            </field>
+        </record>
+        
+        <record id="sale_order_plaza_filter_inherit" model="ir.ui.view">
+            <field name="name">sale_order.plaza.view.form.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="plaza_id" />
+                </xpath>
+                <xpath expr="//group/filter[@name='salesperson']" position="before">
+                    <filter string="Plaza" name="plaza_id" domain="[]" context="{'group_by': 'plaza_id'}"/>
+                </xpath> 
+            </field>
+        </record>
+    
+        <record id="sale_report_plazas_filter_inherit" model="ir.ui.view">
+            <field name="name">report.sale_report.plaza.view.form.inherit</field>
+            <field name="model">sale.report</field>
+            <field name="inherit_id" ref="sale.view_order_product_search"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='date']" position="after">
+                    <field name="plaza_id" />
+                </xpath>
+                <xpath expr="//group[2]/filter[@name='sales_channel']" position="before">
+                    <filter string="Plaza" name="plaza_id" context="{'group_by': 'plaza_id'}"/>
+                </xpath> 
+            </field>
+        </record>
+    
+    </data>
+</flectra>

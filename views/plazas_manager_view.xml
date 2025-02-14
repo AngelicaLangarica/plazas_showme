@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<flectra>
+    <data>
+    
+        <record id="plazas_manager_view_tree" model="ir.ui.view">
+            <field name="name">plazas.manager.view.tree</field>
+            <field name="model">plazas.manager</field>
+            <field name="arch" type="xml">
+                <tree string="Plazas" editable="bottom">
+                    <field name="name" required="1" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="plazas_manager_action" model="ir.actions.act_window">
+            <field name="name">Plazas</field>
+            <field name="res_model">plazas.manager</field>
+            <field name="view_mode">tree</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Aún no tienes plazas registradas
+                    <p>Crea tu primer plaza</p>
+                </p>
+            </field>
+        </record>
+
+        <menuitem
+            id="plazas_manager_menu"
+            name="Plazas"
+            action="plazas_showme.plazas_manager_action"
+            parent="sale.sale_order_menu"
+            sequence="1001"/>
+    
+    </data>
+</flectra>
