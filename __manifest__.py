@@ -9,7 +9,7 @@
     'website': 'https://lucion.mx',
     'category': 'Tools',
     'version': '1.0',
-    'depends': ['sale','product'],
+    'depends': ['sale','product','account'],
     'data': [
         'security/ir.model.access.csv',
         'views/plazas_manager_view.xml',

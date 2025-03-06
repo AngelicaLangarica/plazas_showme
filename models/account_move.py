@@ -15,13 +15,13 @@ class AccountMovePlazas(models.Model):
             self.plaza_id = self.partner_shipping_id.plaza_id.id
         
 
-    # @api.onchange('partner_id')
-    # def _set_related_partners(self):
-    #     shipping_partner = self.despacho and self.env['res.partner'].sudo().search([('parent_id', '=', self.despacho.id),('type', 'in', ['delivery'])])
-    #     shipping_domain = []
-    #     res = {}
-    #     if shipping_partner:
-    #         shipping_domain = expression.AND([shipping_domain, [('id', 'in', shipping_partner.mapped('id'))]])
+    @api.onchange('partner_id')
+    def _set_related_partners(self):
+        shipping_partner = self.plaza_id and self.env['res.partner'].sudo().search([('parent_id', '=', self.plaza_id.id),('type', 'in', ['delivery'])])
+        shipping_domain = []
+        res = {}
+        if shipping_partner:
+            shipping_domain = expression.AND([shipping_domain, [('id', 'in', shipping_partner.mapped('id'))]])
 
-    #     res['domain'] = {'partner_shipping_id': shipping_domain}
-    #     return res
+        res['domain'] = {'partner_shipping_id': shipping_domain}
+        return res
