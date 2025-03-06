@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<flectra>
+    <data>
+    
+        <!-- <record id="account_payment_tree_inherit_showme" model="ir.ui.view">
+            <field name="name">account.payment.view.form.inherit</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='payment_method_id']" position="after">
+                    <field name="payment_state" />
+                </xpath>
+            </field>
+        </record> -->
+
+        <!-- <record id="account_payment_search_inherit_showme" model="ir.ui.view">
+            <field name="name">account.payment.view.form.inherit</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_search"/>
+            <field name="arch" type="xml">
+                <xpath expr="//filter[@name='partner']" position="after">
+                    <filter string="Estado de pago" name="payment_state" domain="[]" context="{'group_by': 'payment_state'}"/>
+                </xpath>
+            </field>
+        </record> -->
+    
+    </data>
+</flectra>

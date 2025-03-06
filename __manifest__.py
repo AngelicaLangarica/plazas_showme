@@ -17,6 +17,7 @@
         'views/sale_order_view.xml',
         'views/product_template_view.xml',
         'views/account_move_view.xml',
+        'views/account_payment_view.xml',
     ],
     'application': True,
     'installable': True,

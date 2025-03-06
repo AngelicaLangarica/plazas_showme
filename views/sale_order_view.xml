@@ -7,7 +7,7 @@
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//sheet/group[@name='sale_header']/group[@name='order_details']/field[@name='payment_term_id']" position="after">
-                    <field name="plaza_id" />
+                    <field name="plaza_id" force_save="1" />
                 </xpath>
             </field>
         </record>

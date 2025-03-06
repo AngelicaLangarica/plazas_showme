@@ -9,10 +9,12 @@ class AccountMovePlazas(models.Model):
 
     plaza_id = fields.Many2one('plazas.manager', string="Plaza", tracking=True)
 
-    @api.onchange('partner_id','partner_shipping_id')
+    @api.onchange('partner_id','invoice_origin')
     def _change_partner_plaza(self):
-        if self.partner_shipping_id:
-            self.plaza_id = self.partner_shipping_id.plaza_id
+        if self.invoice_origin:
+            self.plaza_id = self.partner_shipping_id.plaza_id.id
+        else:
+            self.plaza_id = self.partner_shipping_id.plaza_id.id
 
     # @api.onchange('partner_id')
     # def _set_related_partners(self):
@@ -24,4 +26,3 @@ class AccountMovePlazas(models.Model):
 
     #     res['domain'] = {'partner_shipping_id': shipping_domain}
     #     return res
-    
