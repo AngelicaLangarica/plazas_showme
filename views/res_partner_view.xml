@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<flectra>
+    <data>
+    
+        <record id="res_partner_form_inherit_plazas" model="ir.ui.view">
+            <field name="name">res.partner.view.form.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='vat']" position="after">
+                    <field name="plaza_id" attrs="{'invisible': [('type', '!=', 'delivery')]}" />
+                </xpath>
+
+                <xpath expr="//sheet/notebook/page[@name='contact_addresses']/field[@name='child_ids']/form/sheet/group[@col='12']/group[@colspan='5'][2]" position="inside">
+                    <field name="plaza_id" attrs="{'invisible': [('type', '!=', 'delivery')]}"/>
+                </xpath>
+            </field>
+        </record>
+    
+    </data>
+</flectra>

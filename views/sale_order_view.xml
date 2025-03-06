@@ -19,6 +19,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='partner_id']" position="after">
                     <field name="plaza_id" />
+                    <field name="partner_shipping_id" />
                 </xpath>
             </field>
         </record>
@@ -30,6 +31,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='partner_id']" position="after">
                     <field name="plaza_id" />
+                    <field name="partner_shipping_id" />
                 </xpath>
             </field>
         </record>
@@ -41,13 +43,16 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='name']" position="after">
                     <field name="plaza_id" />
+                    <field name="partner_shipping_id" />
                 </xpath>
                 <xpath expr="//group/filter[@name='salesperson']" position="before">
                     <filter string="Plaza" name="plaza_id" domain="[]" context="{'group_by': 'plaza_id'}"/>
+                    <filter string="Dirección de entrega" name="d_entrega" domain="[]" context="{'group_by': 'partner_shipping_id'}"/>
                 </xpath> 
             </field>
         </record>
-    
+
+        <!-- Reportes, vista pivot se añadio las plazas     -->
         <record id="sale_report_plazas_filter_inherit" model="ir.ui.view">
             <field name="name">report.sale_report.plaza.view.form.inherit</field>
             <field name="model">sale.report</field>

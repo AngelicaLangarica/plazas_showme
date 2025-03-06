@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<flectra>
+    <data>
+    
+        <record id="account_move_inherit_plazas" model="ir.ui.view">
+            <field name="name">account.move.view.form.inherit</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="plaza_id" />
+                </xpath>
+            </field>
+        </record>
+
+        <record id="account_invoice_tree_inherit_plazas" model="ir.ui.view">
+            <field name="name">account.invoice.tree.inherit.despacho</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_invoice_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='invoice_date']" position="before">
+                    <field name="plaza_id" optional="show" />
+                    <field name="invoice_user_id" optional="show" />
+                </xpath>
+            </field>
+        </record>
+
+        <!--Agregar filtros en la barra de busqueda en account.move-->
+        <record id="account_move_plazas_filter_inherit" model="ir.ui.view">
+            <field name="name">account.move.despacho.view.form.inherit</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="plaza_id" />
+                    <field name="partner_shipping_id" />
+                </xpath>
+                <xpath expr="//group/filter[@name='salesperson']" position="before">
+                    <filter string="Plaza" name="plaza" domain="[]" context="{'group_by': 'plaza_id'}"/>
+                    <filter string="Dirección de entrega" name="d_entrega" domain="[]" context="{'group_by': 'partner_shipping_id'}"/>
+                    <filter string="Estado de pago" name="paymente_state" domain="[]" context="{'group_by': 'payment_state'}"/>
+                </xpath> 
+            </field>
+        </record>
+    
+    </data>
+</flectra>
