@@ -12,7 +12,7 @@
                 </xpath>
 
                 <xpath expr="//sheet/notebook/page[@name='contact_addresses']/field[@name='child_ids']/form/sheet/group[@col='12']/group[@colspan='5'][2]" position="inside">
-                    <field name="plaza_id" attrs="{'invisible': [('type', '!=', 'delivery')]}"/>
+                    <field name="plaza_id" attrs="{'invisible': [('type', '!=', 'delivery')], 'required': [('type', '==', 'delivery')]}"/>
                 </xpath>
             </field>
         </record>

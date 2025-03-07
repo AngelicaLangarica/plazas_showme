@@ -11,8 +11,11 @@ class SaleOrderPlazas(models.Model):
 
     @api.onchange('partner_id','partner_shipping_id')
     def _change_partner_plaza(self):
-        if self.partner_shipping_id:
-            self.plaza_id = self.partner_shipping_id.plaza_id.id
+        for rec in self:
+            if rec.partner_shipping_id:
+                rec.plaza_id = rec.partner_shipping_id.plaza_id.id
+            else:
+                rec.plaza_id = False
     
     @api.onchange('partner_id')
     def _set_related_partners(self):

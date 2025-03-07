@@ -20,11 +20,18 @@ class AccountMovePlazas(models.Model):
     @api.constrains('partner_id', 'partner_shipping_id')
     def _onchange_partner(self):
         for rec in self:
-            _logger.info(f"Shipping Partner {rec.partner_id}----------{rec.partner_shipping_id.name}-----{rec.partner_id.name}-----{rec.plaza_id.name}")
+           # _logger.info(f"Shipping Partner {rec.partner_id}----------{rec.partner_shipping_id.name}-----{rec.partner_id.name}-----{rec.plaza_id.name}")
             if rec.partner_shipping_id:
                 rec.plaza_id = rec.partner_shipping_id.plaza_id
             else:
-                _logger.info(f"otros------->")
+                rec.plaza_id = False
+
+    @api.onchange('partner_id','partner_shipping_id')
+    def _onchange_partner_oninvoice(self):
+        for rec in self:
+            if rec.partner_shipping_id:
+                rec.plaza_id = rec.partner_shipping_id.plaza_id
+            else:
                 rec.plaza_id = False
 
     @api.onchange('partner_id')
