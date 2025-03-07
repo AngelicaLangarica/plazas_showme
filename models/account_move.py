@@ -11,20 +11,30 @@ class AccountMovePlazas(models.Model):
 
     def set_default_plaza(self):
         _logger.info(f"Its Working {self.partner_shipping_id}")
-        if self.partner_id:
+        if self.id:
+            sales = self.env['sale.order'].sudo().search([('invoice_ids', 'in', self.ids)])
+            if sales:
+                plaza_id = sales[0].plaza_id
+            return plaza_id
+        elif self.partner_id:
             return self.partner_shipping_id.plaza_id    
-        return self.partner_shipping_id.plaza_id
+        return self.partner_id.plaza_id
 
     plaza_id = fields.Many2one('plazas.manager', string="Plaza", tracking=True, default=set_default_plaza)
 
     @api.constrains('partner_id', 'partner_shipping_id')
-    def _onchange_partner(self):
+    def _constrains_partner(self):
         for rec in self:
-           # _logger.info(f"Shipping Partner {rec.partner_id}----------{rec.partner_shipping_id.name}-----{rec.partner_id.name}-----{rec.plaza_id.name}")
-            if rec.partner_shipping_id:
-                rec.plaza_id = rec.partner_shipping_id.plaza_id
+            # Buscamos las ventas las cuales tengan ligada la factura en la que estamos
+            sales = self.env['sale.order'].sudo().search([('invoice_ids', 'in', self.ids)])
+            if sales:
+                # solo tomamos la primera venta para evitar errores
+                plaza_id = sales[0].plaza_id
+            elif rec.partner_shipping_id:
+                plaza_id = rec.partner_shipping_id.plaza_id
             else:
-                rec.plaza_id = False
+                plaza_id = False
+            rec.plaza_id = plaza_id
 
     @api.onchange('partner_id','partner_shipping_id')
     def _onchange_partner_oninvoice(self):
