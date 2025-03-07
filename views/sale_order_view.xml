@@ -12,8 +12,8 @@
                 <xpath expr="//sheet/group[@name='sale_header']/group[@name='order_details']/field[@name='validity_date']" position="attributes">
                     <field name="plaza_id" required="1"/>
                 </xpath>
-                <xpath expr="//sheet/group[@name='sale_header']/group[@name='order_details']/field[@name='validity_date']" position="attributes">
-                    <attribute name="required">1</attribute>
+                <xpath expr="//sheet/group[@name='sale_header']/group[@name='order_details']/field[@name='validity_date']" position="replace">
+                    <field name="validity_date" attrs="{'invisible': [('state', 'in', ['sale', 'done'])],'required': [('state', 'in', ['draft', 'sent', 'cancel'])]}"/>
                 </xpath>
                 <xpath expr="//sheet/group[@name='sale_header']/group[@name='order_details']/field[@name='payment_term_id']" position="attributes">
                     <attribute name="required">1</attribute>
