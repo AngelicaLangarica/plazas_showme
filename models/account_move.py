@@ -21,7 +21,7 @@ class AccountMovePlazas(models.Model):
         return self.partner_id.plaza_id
 
     plaza_id = fields.Many2one('plazas.manager', string="Plaza", tracking=True, default=set_default_plaza)
-    move_id = fields.One2many('account.payment.register','move_id',string="Payment related")
+    payment_history_id = fields.One2many('account.payment.history','move_id',string="Payment related")
 
     @api.constrains('partner_id', 'partner_shipping_id')
     def _constrains_partner(self):

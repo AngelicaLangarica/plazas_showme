@@ -12,7 +12,7 @@
                 </xpath>
                 <xpath expr="//sheet/notebook/page[@id='other_tab']" position="after">
                     <page name="payment_register" string="Historial de pagos">
-                        <field name="move_id" mode="tree">
+                        <field name="payment_history_id" mode="tree">
                             <tree string="Registro de Pagos" editable="bottom">
                                 <field name="move_id" />
                                 <field name="move_date" />
