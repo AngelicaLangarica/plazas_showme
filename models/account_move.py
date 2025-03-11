@@ -11,7 +11,7 @@ class AccountMovePlazas(models.Model):
 
     def set_default_plaza(self):
         _logger.info(f"Its Working {self.partner_shipping_id}")
-        if self.id:
+        if self.id: 
             sales = self.env['sale.order'].sudo().search([('invoice_ids', 'in', self.ids)])
             if sales:
                 plaza_id = sales[0].plaza_id
@@ -21,6 +21,7 @@ class AccountMovePlazas(models.Model):
         return self.partner_id.plaza_id
 
     plaza_id = fields.Many2one('plazas.manager', string="Plaza", tracking=True, default=set_default_plaza)
+    move_id = fields.One2many('account.payment.register','move_id',string="Payment related")
 
     @api.constrains('partner_id', 'partner_shipping_id')
     def _constrains_partner(self):

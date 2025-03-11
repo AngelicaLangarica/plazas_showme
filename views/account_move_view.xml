@@ -10,6 +10,16 @@
                 <xpath expr="//field[@name='partner_id']" position="after">
                     <field name="plaza_id" />
                 </xpath>
+                <xpath expr="//sheet/notebook/page[@id='other_tab']" position="after">
+                    <page name="payment_register" string="Historial de pagos">
+                        <field name="move_id" mode="tree">
+                            <tree string="Registro de Pagos" editable="bottom">
+                                <field name="move_id" />
+                                <field name="move_date" />
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
             </field>
         </record>
 
