@@ -16,6 +16,8 @@
                             <tree string="Registro de Pagos" editable="bottom">
                                 <field name="move_id" />
                                 <field name="move_date" />
+                                <!-- <field name="payment_import" /> -->
+                                <!-- <field name="payment_status" /> -->
                             </tree>
                         </field>
                     </page>

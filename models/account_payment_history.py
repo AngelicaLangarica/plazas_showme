@@ -16,3 +16,13 @@ class AccountPaymentRegister(models.Model):
     
     move_id = fields.Many2one('account.move', string="Factura relacionada")
     move_date = fields.Date(string="Fecha de pago", default=lambda self: self.today_date(), tracking=True)
+    #payment_import = fields.Monetary(string="Importe")
+    #payment_status = fields.Char(string="Estado")
+
+    # def _compute_import(self):
+    #     for line in self:
+    #         if line.move_id:
+    #            line.payment_import = line.move_id.payment_state.amount
+    #         else:
+    #             line.payment_import = 0.0
+        

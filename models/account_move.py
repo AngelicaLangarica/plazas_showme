@@ -3,6 +3,8 @@
 
 from flectra import models, fields, api, _
 from flectra.osv import expression
+import pytz
+from datetime import datetime
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -20,8 +22,19 @@ class AccountMovePlazas(models.Model):
             return self.partner_shipping_id.plaza_id    
         return self.partner_id.plaza_id
 
+    def today_date(self):
+        user_tz = pytz.timezone(self.env.user.tz)
+        return pytz.utc.localize(datetime.today()).astimezone(user_tz).date() if user_tz else datetime.today().date()
+    
     plaza_id = fields.Many2one('plazas.manager', string="Plaza", tracking=True, default=set_default_plaza)
     payment_history_id = fields.One2many('account.payment.history','move_id',string="Payment related")
+
+    @api.constrains('payment_state')
+    def _make_payment_records(self):
+        for rec in self:
+            if rec.payment_state in ['partial','paid']:
+                _logger.info(_(f"-----------------payment state {rec.payment_state}"))
+                self.env['account.payment.history'].sudo().create({'move_id': rec.id, 'move_date': rec.today_date()})
 
     @api.constrains('partner_id', 'partner_shipping_id')
     def _constrains_partner(self):
