@@ -9,11 +9,12 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='partner_id']" position="after">
                     <field name="plaza_id" />
+                    <field name="payment_date_save" />
                 </xpath>
                 <xpath expr="//sheet/notebook/page[@id='other_tab']" position="after">
                     <page name="payment_register" string="Historial de pagos">
                         <field name="payment_history_id" mode="tree">
-                            <tree string="Registro de Pagos" editable="bottom">
+                            <tree string="Registro de Pagos" create="false" edit="false">
                                 <field name="move_id" />
                                 <field name="move_date" />
                                 <field name="payment_id" />
@@ -37,6 +38,7 @@
                     <field name="plaza_id" optional="show" />
                     <field name="invoice_user_id" optional="show" />
                     <field name="partner_shipping_id" optional="show" />
+                    <field name="payment_date_save" optional="show"/>
                 </xpath>
             </field>
         </record>

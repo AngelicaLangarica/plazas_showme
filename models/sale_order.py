@@ -79,3 +79,8 @@ class SaleOrderPlazas(models.Model):
                 default_team_id=self.partner_id.team_id.id
             )._get_default_team_id(domain=['|', ('company_id', '=', self.company_id.id), ('company_id', '=', False)], user_id=user_id)
         self.update(values)
+
+class SaleOrderLinePlaza(models.Model):
+    _inherit = 'sale.order.line'
+
+    plaza_id = fields.Many2one('plazas.manager', string="Despacho", related='order_id.plaza_id')

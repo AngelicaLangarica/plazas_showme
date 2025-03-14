@@ -1,3 +1,3 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_plazas_manager_showme,plazas_manager.plazas_manager,model_plazas_manager,base.group_user,1,1,1,1
+access_plazas_manager,plazas_manager.plazas_manager,model_plazas_manager,base.group_user,1,1,1,1
 access_account_payment_history,account_payment_history.account_payment_history,model_account_payment_history,base.group_user,1,1,1,1

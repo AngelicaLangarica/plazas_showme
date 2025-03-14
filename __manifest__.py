@@ -9,11 +9,11 @@
     'website': 'https://lucion.mx',
     'category': 'Tools',
     'version': '1.0',
-    'depends': ['sale','product','account','base'],
+    'depends': ['base','sale_management','account','contacts'],
     'data': [
         'security/ir.model.access.csv',
-        'views/plazas_manager_view.xml',
         'views/res_partner_view.xml',
+        'views/plazas_manager_view.xml',
         'views/sale_order_view.xml',
         'views/product_template_view.xml',
         'views/account_move_view.xml',

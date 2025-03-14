@@ -28,13 +28,7 @@ class AccountMovePlazas(models.Model):
     
     plaza_id = fields.Many2one('plazas.manager', string="Plaza", tracking=True, default=set_default_plaza)
     payment_history_id = fields.One2many('account.payment.history','move_id',string="Payment related")
-
-    @api.constrains('payment_state')
-    def _make_payment_records(self):
-        for rec in self:
-            if rec.payment_state in ['partial','paid']:
-                _logger.info(_(f"-----------------payment state {rec.payment_state}"))
-                self.env['account.payment.history'].sudo().create({'move_id': rec.id, 'move_date': rec.today_date()})
+    payment_date_save = fields.Date(string="Fecha de pago", store=True, compute="_compute_date", tracking=True)
 
     @api.constrains('partner_id', 'partner_shipping_id')
     def _constrains_partner(self):
@@ -68,3 +62,11 @@ class AccountMovePlazas(models.Model):
 
         res['domain'] = {'partner_shipping_id': shipping_domain}
         return res
+
+    @api.depends('payment_state')
+    def _compute_date(self):
+        for rec in self:
+            if rec.payment_state == 'paid':
+                rec.payment_date_save = rec.today_date()
+            else:
+                rec.payment_date_save = False
