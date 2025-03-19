@@ -48,7 +48,7 @@ class AccountMovePlazas(models.Model):
     def _onchange_partner_oninvoice(self):
         for rec in self:
             if rec.partner_shipping_id:
-                rec.plaza_id = rec.partner_shipping_id.plaza_id
+                rec.plaza_id = rec.partner_shipping_iVd.plaza_id
             else:
                 rec.plaza_id = False
 
