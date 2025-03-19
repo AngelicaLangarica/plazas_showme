@@ -23,7 +23,7 @@ class AccountMovePlazas(models.Model):
         return self.partner_id.plaza_id
 
     def today_date(self):
-        user_tz = pytz.timezone(self.env.user.tz)
+        user_tz = pytz.timezone(self.env.user.tz) if self.env.user.tz else pytz.timezone('America/Mexico_City')
         return pytz.utc.localize(datetime.today()).astimezone(user_tz).date() if user_tz else datetime.today().date()
     
     plaza_id = fields.Many2one('plazas.manager', string="Plaza", tracking=True, default=set_default_plaza)
@@ -48,7 +48,7 @@ class AccountMovePlazas(models.Model):
     def _onchange_partner_oninvoice(self):
         for rec in self:
             if rec.partner_shipping_id:
-                rec.plaza_id = rec.partner_shipping_iVd.plaza_id
+                rec.plaza_id = rec.partner_shipping_id.plaza_id
             else:
                 rec.plaza_id = False
 
@@ -69,4 +69,5 @@ class AccountMovePlazas(models.Model):
             if rec.payment_state == 'paid':
                 rec.payment_date_save = rec.today_date()
             else:
-                rec.payment_date_save = False
+                if not rec.payment_date_save:
+                    rec.payment_date_save = False
