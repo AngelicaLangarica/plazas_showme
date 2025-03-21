@@ -15,17 +15,9 @@ class AccountPaymentRegister(models.Model):
         return pytz.utc.localize(datetime.today()).astimezone(user_tz).date() if user_tz else datetime.today().date()
     
     move_id = fields.Many2one('account.move', string="Factura relacionada")
-    move_date = fields.Date(string="Fecha de pago", default=lambda self: self.today_date(), tracking=True)
+    move_date = fields.Date(string="Fecha de registro", default=lambda self: self.today_date(), tracking=True)
+    payment_date = fields.Date(string="Fecha del pago", related="payment_id.date")
+    pay_date_saved = fields.Date(string="Fecha Marcada Pagada", related="move_id.payment_date_save")
     payment_id = fields.Many2one('account.payment', string="Pago Relacionado")
     amount = fields.Monetary(string="Monto", related="payment_id.amount")
     currency_id = fields.Many2one('res.currency', related='payment_id.currency_id')
-    #payment_import = fields.Monetary(string="Importe")
-    #payment_status = fields.Char(string="Estado")
-
-    # def _compute_import(self):
-    #     for line in self:
-    #         if line.move_id:
-    #            line.payment_import = line.move_id.payment_state.amount
-    #         else:
-    #             line.payment_import = 0.0
-        

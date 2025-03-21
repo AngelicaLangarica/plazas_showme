@@ -75,7 +75,8 @@ class AccountMovePlazas(models.Model):
                         dates.append(item['date'])
                         rec.create_history(item)
                     dates.sort()
-                    rec.payment_date_save = dates[0]
+                    if not rec.payment_date_save:
+                        rec.payment_date_save = dates[-1]
                 elif not rec.payment_date_save:
                     rec.payment_date_save = False
             elif rec.payment_state == 'partial':

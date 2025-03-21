@@ -15,13 +15,13 @@
                     <page name="payment_register" string="Historial de pagos">
                         <field name="payment_history_id" mode="tree">
                             <tree string="Registro de Pagos" create="false" edit="false">
-                                <field name="move_id" />
-                                <field name="move_date" />
+                                <field name="move_date" optional="hide"/>
+                                <field name="pay_date_saved" optional="show"/>
+                                <field name="move_id" optional="show"/>
                                 <field name="payment_id" />
-                                <field name="currency_id" />
+                                <field name="payment_date" />
+                                <field name="currency_id" optional="show" />
                                 <field name="amount" />
-                                <!-- <field name="payment_import" /> -->
-                                <!-- <field name="payment_status" /> -->
                             </tree>
                         </field>
                     </page>
