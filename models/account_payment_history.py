@@ -11,7 +11,7 @@ class AccountPaymentRegister(models.Model):
     _name = 'account.payment.history'
 
     def today_date(self):
-        user_tz = pytz.timezone(self.env.user.tz)
+        user_tz = pytz.timezone(self.env.user.tz) if self.env.user.tz else pytz.timezone('America/Mexico_City')
         return pytz.utc.localize(datetime.today()).astimezone(user_tz).date() if user_tz else datetime.today().date()
     
     move_id = fields.Many2one('account.move', string="Factura relacionada")

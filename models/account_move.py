@@ -5,6 +5,7 @@ from flectra import models, fields, api, _
 from flectra.osv import expression
 import pytz
 from datetime import datetime
+import json
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -65,9 +66,34 @@ class AccountMovePlazas(models.Model):
 
     @api.depends('payment_state')
     def _compute_date(self):
+        dates = []
         for rec in self:
+            load_json = json.loads(rec.invoice_payments_widget)
             if rec.payment_state == 'paid':
-                rec.payment_date_save = rec.today_date()
+                if rec.invoice_payments_widget:
+                    for item in load_json['content']:
+                        dates.append(item['date'])
+                        rec.create_history(item)
+                    dates.sort()
+                    rec.payment_date_save = dates[0]
+                elif not rec.payment_date_save:
+                    rec.payment_date_save = False
+            elif rec.payment_state == 'partial':
+                for item in load_json['content']:
+                    dates.append(item['date'])
+                    rec.create_history(item)
+                dates.sort()
             else:
                 if not rec.payment_date_save:
                     rec.payment_date_save = False
+
+    def create_history(self, item):
+        instance_history = self.env['account.payment.history'].sudo()
+        payment_id = item['account_payment_id']
+        data = {
+            'move_id': self.id,
+            'payment_id': payment_id,
+        }
+        exists_pay = instance_history.search([('move_id', '=', self.id),('payment_id', '=', payment_id)],limit=1)
+        if not exists_pay:
+            instance_history.create(data)
