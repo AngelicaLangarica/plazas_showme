@@ -66,8 +66,8 @@ class AccountMovePlazas(models.Model):
 
     @api.depends('payment_state')
     def _compute_date(self):
-        dates = []
         for rec in self:
+            dates = []
             load_json = json.loads(rec.invoice_payments_widget)
             if rec.payment_state == 'paid':
                 if rec.invoice_payments_widget:
