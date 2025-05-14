@@ -69,24 +69,27 @@ class AccountMovePlazas(models.Model):
         for rec in self:
             dates = []
             load_json = json.loads(rec.invoice_payments_widget)
-            if rec.payment_state == 'paid':
-                if rec.invoice_payments_widget:
+            if load_json:
+                if rec.payment_state == 'paid':
+                    if rec.invoice_payments_widget:
+                        for item in load_json['content']:
+                            dates.append(item['date'])
+                            rec.create_history(item)
+                        dates.sort()
+                        if not rec.payment_date_save:
+                            rec.payment_date_save = dates[-1]
+                    elif not rec.payment_date_save:
+                        rec.payment_date_save = False
+                elif rec.payment_state == 'partial':
                     for item in load_json['content']:
                         dates.append(item['date'])
                         rec.create_history(item)
                     dates.sort()
+                else:
                     if not rec.payment_date_save:
-                        rec.payment_date_save = dates[-1]
-                elif not rec.payment_date_save:
-                    rec.payment_date_save = False
-            elif rec.payment_state == 'partial':
-                for item in load_json['content']:
-                    dates.append(item['date'])
-                    rec.create_history(item)
-                dates.sort()
+                        rec.payment_date_save = False
             else:
-                if not rec.payment_date_save:
-                    rec.payment_date_save = False
+                rec.payment_date_save = False
 
     def create_history(self, item):
         instance_history = self.env['account.payment.history'].sudo()

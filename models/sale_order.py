@@ -16,7 +16,7 @@ class SaleOrderPlazas(models.Model):
                 rec.plaza_id = rec.partner_shipping_id.plaza_id.id
             else:
                 rec.plaza_id = False
-    
+
     @api.onchange('partner_id')
     def _set_related_partners(self):
         shipping_partner = self.partner_id and self.env['res.partner'].sudo().search([('parent_id', '=', self.partner_id.id),('type', 'in', ['delivery'])])
