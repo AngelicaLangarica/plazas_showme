@@ -30,6 +30,8 @@ class AccountMovePlazas(models.Model):
     plaza_id = fields.Many2one('plazas.manager', string="Plaza", tracking=True, default=set_default_plaza)
     payment_history_id = fields.One2many('account.payment.history','move_id',string="Payment related")
     payment_date_save = fields.Date(string="Fecha de pago", store=True, compute="_compute_date", tracking=True)
+    total_no_credit = fields.Monetary(string='Total no N.C.')
+    total_no_credit_taxed = fields.Monetary(string='Total no N.C. Impuestos')
 
     @api.constrains('partner_id', 'partner_shipping_id')
     def _constrains_partner(self):
@@ -88,6 +90,18 @@ class AccountMovePlazas(models.Model):
                 else:
                     if not rec.payment_date_save:
                         rec.payment_date_save = False
+                # recorremos el contenido del json para identificar si el movimiento es una nota de credito, para eso sacamos el move_id
+                # y buscamos en account.move por ese id y especificamente el campo move_type igualamos a out_refund, si esto es ok
+                # se procede a realizar las operaciones necesarias, se aplica suma puesto que una nota de credito se registra en negativo
+                # 1000 + (-800) = 200
+                for note in load_json['content']:
+                    if note['move_id']:
+                        is_credit_note = self.env['account.move'].sudo().search([('id', '=', note['move_id']),('move_type', 'in', ['out_refund'])])
+                        if is_credit_note:
+                            total_taxed = rec.amount_total_signed + is_credit_note.amount_total_signed
+                            total_untaxed = rec.amount_untaxed_signed + is_credit_note.amount_untaxed_signed
+                            rec.total_no_credit = total_untaxed
+                            rec.total_no_credit_taxed = total_taxed
             else:
                 rec.payment_date_save = False
 

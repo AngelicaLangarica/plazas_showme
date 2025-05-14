@@ -39,6 +39,8 @@
                     <field name="invoice_user_id" optional="show" />
                     <field name="partner_shipping_id" optional="show" />
                     <field name="payment_date_save" optional="show"/>
+                    <field name="total_no_credit" optional="show" />
+                    <field name="total_no_credit_taxed" optional="show" />
                 </xpath>
             </field>
         </record>
