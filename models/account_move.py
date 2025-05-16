@@ -107,8 +107,8 @@ class AccountMovePlazas(models.Model):
                             rec.total_no_credit = total_untaxed
                             rec.total_no_credit_taxed = total_taxed
                     else:
-                        total_taxed = rec.amount_total_signed
-                        total_untaxed = rec.amount_untaxed_signed
+                        rec.total_no_credit = rec.amount_untaxed_signed
+                        rec.total_no_credit_taxed = rec.amount_total_signed
             else:
                 rec.payment_date_save = False
                 rec.payment_date_registred = False
