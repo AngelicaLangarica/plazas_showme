@@ -30,8 +30,9 @@ class AccountMovePlazas(models.Model):
     plaza_id = fields.Many2one('plazas.manager', string="Plaza", tracking=True, default=set_default_plaza)
     payment_history_id = fields.One2many('account.payment.history','move_id',string="Payment related")
     payment_date_save = fields.Date(string="Fecha de pago", store=True, compute="_compute_date", tracking=True)
-    total_no_credit = fields.Monetary(string='Total no N.C.')
-    total_no_credit_taxed = fields.Monetary(string='Total no N.C. Impuestos')
+    payment_date_registred = fields.Date(string="Fecha pagada", store=True, compute="_compute_date", tracking=True)
+    total_no_credit = fields.Monetary(string='Total sin notas')
+    total_no_credit_taxed = fields.Monetary(string='Total sin notas/Impuestos')
 
     @api.constrains('partner_id', 'partner_shipping_id')
     def _constrains_partner(self):
@@ -74,6 +75,7 @@ class AccountMovePlazas(models.Model):
             if load_json:
                 if rec.payment_state == 'paid':
                     if rec.invoice_payments_widget:
+                        rec.payment_date_registred = self.today_date()
                         for item in load_json['content']:
                             dates.append(item['date'])
                             rec.create_history(item)
@@ -83,6 +85,7 @@ class AccountMovePlazas(models.Model):
                     elif not rec.payment_date_save:
                         rec.payment_date_save = False
                 elif rec.payment_state == 'partial':
+                    rec.payment_date_registred = False
                     for item in load_json['content']:
                         dates.append(item['date'])
                         rec.create_history(item)
@@ -90,6 +93,7 @@ class AccountMovePlazas(models.Model):
                 else:
                     if not rec.payment_date_save:
                         rec.payment_date_save = False
+                        rec.payment_date_registred = False
                 # recorremos el contenido del json para identificar si el movimiento es una nota de credito, para eso sacamos el move_id
                 # y buscamos en account.move por ese id y especificamente el campo move_type igualamos a out_refund, si esto es ok
                 # se procede a realizar las operaciones necesarias, se aplica suma puesto que una nota de credito se registra en negativo
@@ -102,8 +106,12 @@ class AccountMovePlazas(models.Model):
                             total_untaxed = rec.amount_untaxed_signed + is_credit_note.amount_untaxed_signed
                             rec.total_no_credit = total_untaxed
                             rec.total_no_credit_taxed = total_taxed
+                    else:
+                        total_taxed = rec.amount_total_signed
+                        total_untaxed = rec.amount_untaxed_signed
             else:
                 rec.payment_date_save = False
+                rec.payment_date_registred = False
 
     def create_history(self, item):
         instance_history = self.env['account.payment.history'].sudo()
