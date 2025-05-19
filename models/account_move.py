@@ -72,6 +72,7 @@ class AccountMovePlazas(models.Model):
         for rec in self:
             dates = []
             load_json = json.loads(rec.invoice_payments_widget)
+            total_taxed = total_untaxed = 0
             if load_json:
                 if rec.payment_state == 'paid':
                     if rec.invoice_payments_widget:
@@ -102,16 +103,14 @@ class AccountMovePlazas(models.Model):
                     if note['move_id']:
                         is_credit_note = self.env['account.move'].sudo().search([('id', '=', note['move_id']),('move_type', 'in', ['out_refund'])])
                         if is_credit_note:
-                            total_taxed = rec.amount_total_signed + is_credit_note.amount_total_signed
-                            total_untaxed = rec.amount_untaxed_signed + is_credit_note.amount_untaxed_signed
-                            rec.total_no_credit = total_untaxed
-                            rec.total_no_credit_taxed = total_taxed
-                    else:
-                        rec.total_no_credit = rec.amount_untaxed_signed
-                        rec.total_no_credit_taxed = rec.amount_total_signed
+                            total_taxed += is_credit_note.amount_total_signed
+                            total_untaxed += is_credit_note.amount_untaxed_signed
+                _logger.info(f"{total_taxed}-------|{total_untaxed}----------")
             else:
                 rec.payment_date_save = False
                 rec.payment_date_registred = False
+            rec.total_no_credit = rec.amount_untaxed_signed + total_untaxed
+            rec.total_no_credit_taxed = rec.amount_total_signed + total_taxed
 
     def create_history(self, item):
         instance_history = self.env['account.payment.history'].sudo()
