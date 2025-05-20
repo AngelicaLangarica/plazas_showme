@@ -31,8 +31,8 @@ class AccountMovePlazas(models.Model):
     payment_history_id = fields.One2many('account.payment.history','move_id',string="Payment related")
     payment_date_save = fields.Date(string="Fecha de pago", store=True, compute="_compute_date", tracking=True)
     payment_date_registred = fields.Date(string="Fecha pagada", store=True, compute="_compute_date", tracking=True)
-    total_no_credit = fields.Monetary(string='Total sin notas')
-    total_no_credit_taxed = fields.Monetary(string='Total sin notas/Impuestos')
+    total_no_credit = fields.Monetary(string='Total N.C./sin impuestos')
+    total_no_credit_taxed = fields.Monetary(string='Total N.C./con impuestos')
 
     @api.constrains('partner_id', 'partner_shipping_id')
     def _constrains_partner(self):
